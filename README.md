@@ -24,4 +24,5 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### DEPENDENCIAS!!!!
-npm install vuex --save
+npm install --save vuex
+npm install --save axios vue-axios

@@ -1,22 +1,26 @@
 <template>
   <div class="index">
-    
+    <login />
   </div>
 </template>
 
 <script>
+  import LoginComponent from "./login";
+
 export default {
-  name: 'index',
-  props: [],
-  methods: {
-    getToken: function(){
-      console.log(this.$store);
-      this.$store.commit("setToken", "my Name is jeez");
-      console.log(this.$store);
+  data: function() {
+    return {
+
     }
   },
+  methods: {
+
+  },
+  components:{
+    login: LoginComponent,
+  },
   created(){
-    this.getToken();
+    
   }
 }
 </script>

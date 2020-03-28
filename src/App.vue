@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import IndexComponent from './components/index.vue'
+
+import IndexComponent from './components/index.vue';
 
 export default {
   name: 'App',
