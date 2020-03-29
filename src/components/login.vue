@@ -33,6 +33,7 @@ export default {
         return {
             username: "",
             password: "",
+            token: null
         };
     },
     methods: {
@@ -66,6 +67,11 @@ export default {
             })
             .then(response =>{
                 console.log(response);
+                this.token = response.headers['x-subject-token'];   //JESUS QUE DEU LUTA!!!
+
+                console.log(this.token);
+
+                //this.$store.commit('setToken', this.token)
             })
             .catch(error =>{
                 console.log("LOGIN ERROR");

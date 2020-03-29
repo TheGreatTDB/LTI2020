@@ -1,6 +1,13 @@
 <template>
   <div class="index">
-    <login />
+
+    <div v-if="isloggin == false">
+      <login />
+    </div>
+
+    <div v-if="isloggin == true">
+      
+    </div>
   </div>
 </template>
 
@@ -10,7 +17,7 @@
 export default {
   data: function() {
     return {
-
+        isloggin: false
     }
   },
   methods: {

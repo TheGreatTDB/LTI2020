@@ -6,7 +6,7 @@ import store from './store/auth';
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 
-axios.defaults.baseURL = "http://192.168.93.10";
+axios.defaults.baseURL = "http://devstack.local";
  
 Vue.use(VueAxios, axios)
 
