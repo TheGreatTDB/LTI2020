@@ -1,18 +1,20 @@
 <template>
   <div class="index">
 
-    <div v-if="isloggin == false">
+    <div v-if="this.$store.state.token == null">
+      <img alt="Vue logo" src="./../assets/logo.png">
       <login />
     </div>
 
-    <div v-if="isloggin == true">
-      
+    <div v-if="this.$store.state.token != null">
+      <menuNav />
     </div>
   </div>
 </template>
 
 <script>
   import LoginComponent from "./login";
+  import MenuNavComponent from "./menuNav";
 
 export default {
   data: function() {
@@ -25,6 +27,7 @@ export default {
   },
   components:{
     login: LoginComponent,
+    menuNav: MenuNavComponent
   },
   created(){
     

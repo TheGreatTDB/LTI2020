@@ -26,3 +26,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### DEPENDENCIAS!!!!
 npm install --save vuex
 npm install --save axios vue-axios
+npm install --save bootstrap-vue bootstrap
