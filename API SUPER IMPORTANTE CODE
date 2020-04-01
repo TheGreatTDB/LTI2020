@@ -1,0 +1,196 @@
+FICOU A FALTAR:[
+    • Fazer upload de imagens de OS
+]
+
+
+
+
+#### ID DA IMAGEM DE OS A USAR
+GET devstack.local/image/v2/images
+
+HEADERS:[
+    x-auth-token: XXX
+]
+
+#### FLAVORS A USAR
+GET devstack.local/compute/v2.1/flavors/detail 
+
+HEADERS:[
+    x-auth-token: XXX
+]
+
+#### ID DA NETWORK A USAR
+
+GET devstack.local:9696/v2.0/networks
+HEADERS:[
+    x-auth-token: XXX
+]
+
+#### LISTAR VOLUMES
+GET devstack.local/volume/v3/1ee9c7dc7b8f420c80171ed45882b047/volumes   EM QUE 1ee9c7dc7b8f420c80171ed45882b047 é o ID DO PROJECTO
+HEADERS:[
+    x-auth-token: XXX
+]
+
+
+
+######################################################################          API LISTAR INSTANCES
+GET devstack.local/compute/v2.1/servers
+HEADERS:[
+    x-auth-token: XXX
+]
+
+######################################################################          API CRIAR INSTANCE
+POST devstack.local/compute/v2.1/servers
+
+HEADER:[
+
+    x-auth-token
+    Content-Type: application/json
+]
+
+BODY
+{
+  "server": {
+  "name": "instance_API",  # NOME DA INSTANCE A DAR PELO USER
+  "imageRef": "beef489f-cf98-4412-a5d3-e30705545ff7",      # ID DA IMAGEM DE OS A USAR
+  "flavorRef": "http://openstack.example.com/flavors/1",  # FLAVORS A USAR
+  "networks" : [{
+    "uuid" : "0d383ca0-0526-4f84-abfe-937d0e956999"   # ID DA NETWORK A USAR
+   }]
+  }
+}
+
+#####################################################################          REMOVER INSTANCE 
+
+DELETE devstack.local/compute/v2.1/servers/516a716e-d9f1-435f-9f91-f2fadfa4475f             ONDE ESTES ULTIMOS NUMEROS SAO O ID DA INSTANCE A REMOVER 
+HEADER:[
+
+    x-auth-token
+]
+
+
+
+####################################################################            EDITAR INSTANCE
+Nota: é preciso ver aqui o que é possivel editar na interface web do devstack e fazer put só desses 
+
+
+PUT devstack.local/compute/v2.1/servers/516a716e-d9f1-435f-9f91-f2fadfa4475f       ONDE ESTES ULTIMOS NUMEROS SAO O ID DA INSTANCE A EDITAR 
+{
+    "server": {
+        "OS-DCF:diskConfig": "AUTO",
+        "OS-EXT-AZ:availability_zone": "us-west",
+        "OS-EXT-SRV-ATTR:host": "compute",
+        "OS-EXT-SRV-ATTR:hostname": "new-server-test",
+        "OS-EXT-SRV-ATTR:hypervisor_hostname": "fake-mini",
+        "OS-EXT-SRV-ATTR:instance_name": "instance-00000001",
+        "OS-EXT-SRV-ATTR:kernel_id": "",
+        "OS-EXT-SRV-ATTR:launch_index": 0,
+        "OS-EXT-SRV-ATTR:ramdisk_id": "",
+        "OS-EXT-SRV-ATTR:reservation_id": "r-t61j9da6",
+        "OS-EXT-SRV-ATTR:root_device_name": "/dev/sda",
+        "OS-EXT-SRV-ATTR:user_data": "IyEvYmluL2Jhc2gKL2Jpbi9zdQplY2hvICJJIGFtIGluIHlvdSEiCg==",
+        "OS-EXT-STS:power_state": 1,
+        "OS-EXT-STS:task_state": null,
+        "OS-EXT-STS:vm_state": "active",
+        "OS-SRV-USG:launched_at": "2019-04-23T15:19:10.855016",
+        "OS-SRV-USG:terminated_at": null,
+        "accessIPv4": "1.2.3.4",
+        "accessIPv6": "80fe::",
+        "addresses": {
+            "private": [
+                {
+                    "OS-EXT-IPS-MAC:mac_addr": "00:0c:29:0d:11:74",
+                    "OS-EXT-IPS:type": "fixed",
+                    "addr": "192.168.1.30",
+                    "version": 4
+                }
+            ]
+        },
+        "config_drive": "",
+        "created": "2012-12-02T02:11:57Z",
+        "description": "Sample description",
+        "flavor": {
+            "disk": 1,
+            "ephemeral": 0,
+            "extra_specs": {},
+            "original_name": "m1.tiny",
+            "ram": 512,
+            "swap": 0,
+            "vcpus": 1
+        },
+        "hostId": "6e84af987b4e7ec1c039b16d21f508f4a505672bd94fb0218b668d07",
+        "host_status": "UP",
+        "id": "324dfb7d-f4a9-419a-9a19-237df04b443b",
+        "image": {
+            "id": "70a599e0-31e7-49b7-b260-868f441e862b",
+            "links": [
+                {
+                    "href": "http://openstack.example.com/6f70656e737461636b20342065766572/images/70a599e0-31e7-49b7-b260-868f441e862b",
+                    "rel": "bookmark"
+                }
+            ]
+        },
+        "key_name": null,
+        "links": [
+            {
+                "href": "http://openstack.example.com/v2/6f70656e737461636b20342065766572/servers/324dfb7d-f4a9-419a-9a19-237df04b443b",
+                "rel": "self"
+            },
+            {
+                "href": "http://openstack.example.com/6f70656e737461636b20342065766572/servers/324dfb7d-f4a9-419a-9a19-237df04b443b",
+                "rel": "bookmark"
+            }
+        ],
+        "locked": false,
+        "locked_reason": null,
+        "metadata": {
+            "My Server Name": "Apache1"
+        },
+        "name": "new-server-test",
+        "os-extended-volumes:volumes_attached": [],
+        "progress": 0,
+        "security_groups": [
+            {
+                "name": "default"
+            }
+        ],
+        "server_groups": [],
+        "status": "ACTIVE",
+        "tags": [],
+        "tenant_id": "6f70656e737461636b20342065766572",
+        "trusted_image_certificates": null,
+        "updated": "2012-12-02T02:11:58Z",
+        "user_id": "fake"
+    }
+}
+
+
+
+
+######################################################################          API CRIAR VOLUMES
+POST devstack.local/volume/v3/1ee9c7dc7b8f420c80171ed45882b047/volumes   EM QUE 1ee9c7dc7b8f420c80171ed45882b047 é o ID DO PROJECTO
+
+HEADER:[
+
+    x-auth-token
+    Content-Type: application/json
+]
+
+BODY
+{
+    "volume": {
+        "size": 10,
+        "availability_zone": null,
+        "source_volid": null,
+        "description": "volume do david",
+        "multiattach": false,
+        "snapshot_id": null,
+        "backup_id": null,
+        "name": "david",
+        "imageRef": null,
+        "volume_type": null,
+        "metadata": {},
+        "consistencygroup_id": null
+    }
+}
