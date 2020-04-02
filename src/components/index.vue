@@ -10,7 +10,7 @@
 
       <div v-if="this.$store.state.currentProject != null">
         <projectDetails />
-        <listInstances/>
+        <createInstance v-if="this.$store.state.selectedTab =='createInstance'" />
       </div>
     </div>
 
@@ -21,7 +21,7 @@
   import LoginComponent from "./login";
   import MenuNavComponent from "./menuNav";
   import ProjectDetailsComponent from "./projectDetails";
-  import ListInstancesComponent from "./listInstances";
+  import CreateInstanceComponent from "./createInstance";
 
 export default {
 
@@ -40,7 +40,7 @@ export default {
     login: LoginComponent,
     menuNav: MenuNavComponent,
     projectDetails: ProjectDetailsComponent,
-    listInstances: ListInstancesComponent,
+    createInstance: CreateInstanceComponent
   },
   created(){
     

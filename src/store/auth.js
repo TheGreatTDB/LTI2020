@@ -13,7 +13,8 @@ export default new Vuex.Store({
         },
         token: sessionStorage.getItem('token') || null,
         currentProject: null,
-        refresh: false
+        refresh: false,
+        selectedTab: "instances",
     },
     mutations: {
         setToken: (state, token) => {
@@ -45,6 +46,9 @@ export default new Vuex.Store({
             }else{
                 state.refresh = false;
             }
+        },
+        setSelectedTab: (state, tab) => {
+            state.selectedTab = tab;
         }
 
         

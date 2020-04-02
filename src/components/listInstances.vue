@@ -6,20 +6,20 @@
                 <th>Instances:</th>
             </tr>
         </table>
-            <table v-if="this.instantes != null" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="instance in instances" :key="instance.id">
-                        <td>{{ instance.id }}</td>
-                        <td>{{ instance.name }}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <table v-if="this.instances != null" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="instance in instances" :key="instance.id">
+                    <td>{{ instance.id }}</td>
+                    <td>{{ instance.name }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 <script>
@@ -55,6 +55,7 @@ export default {
     },
     created(){
         this.loadInstances();
+        console.log("lol")
 
     }   
     

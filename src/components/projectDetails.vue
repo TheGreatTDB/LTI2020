@@ -1,19 +1,12 @@
 <template>
     <div>
-        <table class="table table-striped">
-            <p />
-            <p />
-            <p />
-            <p />
-            <p />
-            <p />
-            <p />
-            <p />
+        <br/>
+        <table v-if="this.images != null && this.$store.state.selectedTab == 'images'" class="table table-striped">
             <tr>
                 <th>IMAGES:</th>
             </tr>
         </table>
-            <table v-if="this.images != null" class="table table-striped">
+            <table v-if="this.images != null && this.$store.state.selectedTab == 'images'" class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -43,12 +36,12 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="table table-striped">
+            <table v-if="this.networks != null && this.$store.state.selectedTab =='networks'" class="table table-striped">
                 <tr>
                     <th>NETWORKS:</th>
                 </tr>
             </table>
-            <table v-if="this.networks != null" class="table table-striped">
+            <table v-if="this.networks != null && this.$store.state.selectedTab =='networks'" class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -76,12 +69,12 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="table table-striped">
+            <table v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'" class="table table-striped">
                 <tr>
                     <th>FLAVORS:</th>
                 </tr>
             </table>
-            <table v-if="this.flavors != null" class="table table-striped">
+            <table v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'" class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -103,6 +96,25 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-if="this.instances != null && this.$store.state.selectedTab == 'instances'" class="table table-striped">
+                <tr>
+                    <th>Instances:</th>
+                </tr>
+            </table>
+            <table v-if="this.instances != null && this.$store.state.selectedTab == 'instances'" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="instance in instances" :key="instance.id">
+                        <td>{{ instance.id }}</td>
+                        <td>{{ instance.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 </template>
 <script>
@@ -113,6 +125,7 @@ export default {
             images: null,
             networks: null,
             flavors: null,
+            instances: null,
             test: null
         };
     },
@@ -177,12 +190,33 @@ export default {
                 console.log("Failed to load Flavors")
                 console.log(error)
             })
+        },
+        loadInstances: function() {
+            var axiosInstances = this.axios.create({
+                headers: {
+                    'x-auth-token': this.$store.state.token,
+                    // 'Content-Type': 'application/json',
+                    // 'Accept': 'application/json',
+                }
+            })
+
+            axiosInstances.get("/compute/v2.1/servers")
+            .then(response => {
+                this.instances = response.data.servers;
+                console.log("Instances: ")
+                console.log(this.instances)
+            })
+            .catch(error => {
+                console.log("Failed to load Instances:")
+                console.log(error)
+            })
         }
     },
     created(){
         this.loadImages();
         this.loadNetworks();
         this.loadFlavors();
+        this.loadInstances();
     }   
     
 }

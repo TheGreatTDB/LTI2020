@@ -12,8 +12,8 @@
             <i class="fas fa-bars"></i>
             </button>
 
-            <div>
-              <b-button variant="outline-primary">Instances</b-button>
+            <div v-if="projectSelected != null">
+              <b-button v-on:click.prevent="selectTab('createInstance')">Create Instance</b-button>
             </div>  
 
             <!-- Navbar Search -->
@@ -31,13 +31,17 @@
             <!-- Navbar -->
             <ul class="navbar-nav ml-auto ml-md-0">
             <b-navbar-nav>
-                <div> Projects: </div>
+                <b-nav-item-dropdown v-if="projectSelected != null" text="Show Details" right>
+                    <b-dropdown-item v-on:click.prevent="selectTab('instances')">Instances</b-dropdown-item>
+                    <b-dropdown-item v-on:click.prevent="selectTab('images')">Images</b-dropdown-item>
+                    <b-dropdown-item v-on:click.prevent="selectTab('networks')">Networks</b-dropdown-item>
+                    <b-dropdown-item v-on:click.prevent="selectTab('flavors')">Flavors</b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item> Projects: </b-nav-item>
                 <select v-if="this.projects != null" v-model="projectSelected" class="form-control" name="project_id" id="project_id" @change="selectProject($event)">
                     <option v-for="project in projects" :key="project.id" v-bind:value="project.id"> {{project.name}} </option>
                 </select>
                 <b-nav-item-dropdown text="Account" right>
-                    <b-dropdown-item>
-                    </b-dropdown-item>
                     <b-dropdown-item v-on:click.prevent="logout()">Logout</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
@@ -75,13 +79,21 @@ export default {
                 console.log(error)
             })
         },
+        selectTab: function(tab) {
+            this.$store.commit("setSelectedTab", tab);
+        },
         selectProject: function(event){
             if(this.projectSelected != null) {
+
                 this.$store.commit("clearCurrentProject");
             }
 
             this.projectSelected = event.target.value;
-            this.$store.commit("setCurrentProject", this.projectSelected);
+            this.$nextTick().then(() => {
+                // Add the component back in
+                this.$store.commit("setCurrentProject", this.projectSelected);
+            });
+            
             
             this.axios.post("/identity/v3/auth/tokens", {
                 auth: {
