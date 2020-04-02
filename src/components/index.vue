@@ -1,6 +1,5 @@
 <template>
   <div class="index">
-
     <div v-if="this.$store.state.token == null">
       <img alt="Vue logo" src="./../assets/logo.png">
       <login />
@@ -11,6 +10,7 @@
 
       <div v-if="this.$store.state.currentProject != null">
         <projectDetails />
+        <listInstances/>
       </div>
     </div>
 
@@ -21,13 +21,18 @@
   import LoginComponent from "./login";
   import MenuNavComponent from "./menuNav";
   import ProjectDetailsComponent from "./projectDetails";
+  import ListInstancesComponent from "./listInstances";
 
 export default {
+
   data: function() {
     return {
         isloggin: false
     }
   },
+  props:[
+
+  ],
   methods: {
 
   },
@@ -35,6 +40,7 @@ export default {
     login: LoginComponent,
     menuNav: MenuNavComponent,
     projectDetails: ProjectDetailsComponent,
+    listInstances: ListInstancesComponent,
   },
   created(){
     

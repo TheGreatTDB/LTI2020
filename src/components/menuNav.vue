@@ -12,6 +12,10 @@
             <i class="fas fa-bars"></i>
             </button>
 
+            <div>
+              <b-button variant="outline-primary">Instances</b-button>
+            </div>  
+
             <!-- Navbar Search -->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div v-if="this.$store.state.isEdditingProfile == false" class="input-group">
