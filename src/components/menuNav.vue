@@ -26,75 +26,102 @@
 
             <!-- Navbar -->
             <ul class="navbar-nav ml-auto ml-md-0">
-            <b-navbar-nav v-if="this.$store.state.isEdditingProfile == false && this.$store.state.user.type == 'a'">
-                <b-nav-item-dropdown text="Modifications" right>
-                    <b-dropdown-item v-if="!this.$store.state.adminIsCreatingAccount" v-on:click.prevent="adminIsCreatingAccount()">Create Account</b-dropdown-item>
-                    <b-dropdown-item v-if="this.$store.state.adminIsCreatingAccount" v-on:click.prevent="adminIsCreatingAccount()">Users List</b-dropdown-item>
-                    <b-dropdown-item  v-if="this.$store.state.user.type != 'o'" v-on:click.prevent="statistics()">Statistics</b-dropdown-item>
-                </b-nav-item-dropdown>
-            </b-navbar-nav>
-            <b-navbar-nav v-if="this.$store.state.isEdditingProfile == false && this.$store.state.user.type != 'a'">
-                <b-nav-item-dropdown text="Movements" right>
-                    <b-dropdown-item v-if="this.$store.state.isCreateMovement == false && this.$store.state.user.type == 'u'" v-on:click.prevent="createMovement()">Create Movement</b-dropdown-item>
-                    <b-dropdown-item v-if="this.$store.state.user.type == 'u' && this.$store.state.isCreateMovement == true" v-on:click.prevent="createMovement()">Movements</b-dropdown-item>
-                    <b-dropdown-item v-if="this.$store.state.isCreateIncome == false && this.$store.state.user.type == 'o'" v-on:click.prevent="createIncome()">Create Income</b-dropdown-item>
-                    <b-dropdown-item v-if="this.$store.state.user.type == 'o' && this.$store.state.isCreateIncome == true" v-on:click.prevent="createIncome()">Wallets</b-dropdown-item>
-                    
-                    <b-dropdown-item  v-if="this.$store.state.user.type != 'o'" v-on:click.prevent="statistics()">Statistics</b-dropdown-item>
-                    <!-- <b-dropdown-item  v-if="this.$store.state.user.type == 'u'" v-on:click.prevent="topExpenses()">Top Expenses</b-dropdown-item> -->
-                </b-nav-item-dropdown>
-            </b-navbar-nav>
-            <b-navbar-nav v-if="this.$store.state.isEdditingProfile == true" v-on:click.prevent="profile()">
-                <b-nav-item right>
-                    
-                </b-nav-item>
-            </b-navbar-nav>
             <b-navbar-nav>
+                <div> Projects: </div>
+                <select v-if="this.projects != null" v-model="projectSelected" class="form-control" name="project_id" id="project_id" @change="selectProject($event)">
+                    <option v-for="project in projects" :key="project.id" v-bind:value="project.id"> {{project.name}} </option>
+                </select>
                 <b-nav-item-dropdown text="Account" right>
-                    <b-dropdown-item v-if="this.$store.state == false" v-on:click.prevent="profile()">Profile</b-dropdown-item>
+                    <b-dropdown-item>
+                    </b-dropdown-item>
                     <b-dropdown-item v-on:click.prevent="logout()">Logout</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
             </ul>
         </nav>
-        <p />
-        <p />
-        <p />
-        <p />
-
     </div>
 </template>
 
 <script>
 export default {
     props: [],
+    data: function() {
+        return {
+            projects: null,
+            projectSelected: null,
+        };
+    },
     methods: {
-        profile: function(){
-            //console.log(this.$store.state.user);
-            //this.$store.commit("editingProfileToggle");
+        loadProjects: function(){
+            var axiosProjects = this.axios.create({
+                headers: {
+                    'x-auth-token': this.$store.state.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+
+            axiosProjects.get("/identity/v3/auth/projects")
+            .then(response => {
+                this.projects = response.data.projects;
+                console.log(this.projects)
+            })
+            .catch(error => {
+                console.log("Failed to load Projects")
+                console.log(error)
+            })
         },
-        createMovement: function(){
-            //this.$store.commit("createMovementToggle");
-        },
-        createIncome: function(){
-            //this.$store.commit("createIncomeToggle");
-        },
-        statistics: function(){
-            //this.$store.commit("statisticsToggle");
-        },
-        adminIsCreatingAccount: function(){
-            //this.$store.commit("adminIsCreatingAccountToggle");
-        },
-        topExpenses: function(){
-            //this.$store.commit("topExpensesToggle");
+        selectProject: function(event){
+            if(this.projectSelected != null) {
+                this.$store.commit("clearCurrentProject");
+            }
+
+            this.projectSelected = event.target.value;
+            this.$store.commit("setCurrentProject", this.projectSelected);
+            
+            this.axios.post("/identity/v3/auth/tokens", {
+                auth: {
+                    identity: {
+                        methods: [
+                            "password"
+                        ],
+                        password: {
+                            user: {
+                                name: this.$store.state.user.username,
+                                domain: {
+                                    name: "Default"
+                                },
+                                password: this.$store.state.user.password
+                            }
+                        }
+                    },
+                    scope: {
+                        project: {
+                            id: this.projectSelected
+                        }
+                    }
+                }
+            })
+            .then(response => {
+                this.$store.commit('setToken', response.headers['x-subject-token']);
+            })
+            .catch(error => {
+                console.log("Error Selecting Project")
+                console.log(error)
+            })
         },
         logout: function(){
+            this.$store.commit("clearCurrentProject");
             this.$store.commit("clearUser");
             this.$store.commit("clearToken");
         }
     },
     created(){
-        this.$store.commit("loadUser");
+        if(this.$store.state.user == null){
+            this.$store.commit("loadUser");
+        }
+
+        this.loadProjects();
     }
 
 }

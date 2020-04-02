@@ -8,13 +8,19 @@
 
     <div v-if="this.$store.state.token != null">
       <menuNav />
+
+      <div v-if="this.$store.state.currentProject != null">
+        <projectDetails />
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
   import LoginComponent from "./login";
   import MenuNavComponent from "./menuNav";
+  import ProjectDetailsComponent from "./projectDetails";
 
 export default {
   data: function() {
@@ -27,7 +33,8 @@ export default {
   },
   components:{
     login: LoginComponent,
-    menuNav: MenuNavComponent
+    menuNav: MenuNavComponent,
+    projectDetails: ProjectDetailsComponent,
   },
   created(){
     
