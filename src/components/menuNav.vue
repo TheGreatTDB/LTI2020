@@ -36,6 +36,7 @@
                     <b-dropdown-item v-on:click.prevent="selectTab('images')">Images</b-dropdown-item>
                     <b-dropdown-item v-on:click.prevent="selectTab('networks')">Networks</b-dropdown-item>
                     <b-dropdown-item v-on:click.prevent="selectTab('flavors')">Flavors</b-dropdown-item>
+                    <b-dropdown-item v-on:click.prevent="selectTab('volumes')">Volumes</b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item> Projects: </b-nav-item>
                 <select v-if="this.projects != null" v-model="projectSelected" class="form-control" name="project_id" id="project_id" @change="selectProject($event)">
@@ -52,6 +53,7 @@
 
 <script>
 export default {
+    
     props: [],
     data: function() {
         return {
@@ -89,11 +91,6 @@ export default {
             }
 
             this.projectSelected = event.target.value;
-            this.$nextTick().then(() => {
-                // Add the component back in
-                this.$store.commit("setCurrentProject", this.projectSelected);
-            });
-            
             
             this.axios.post("/identity/v3/auth/tokens", {
                 auth: {
@@ -120,6 +117,9 @@ export default {
             })
             .then(response => {
                 this.$store.commit('setToken', response.headers['x-subject-token']);
+                this.$nextTick().then(() => {
+                    this.$store.commit("setCurrentProject", this.projectSelected);
+                });
             })
             .catch(error => {
                 console.log("Error Selecting Project")

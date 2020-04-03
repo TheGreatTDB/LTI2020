@@ -115,9 +115,31 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
+                <tr>
+                    <th>Instances:</th>
+                </tr>
+            </table>
+            <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="volume in volumes" :key="volume.id">
+                        <td>{{ volume.id }}</td>
+                        <td>{{ volume.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <createInstance v-if="this.$store.state.selectedTab =='createInstance'" :networks="this.networks"/>
         </div>
 </template>
 <script>
+import CreateInstanceComponent from "./createInstance";
+
 export default {
     props: [],
     data: function() {
@@ -126,7 +148,7 @@ export default {
             networks: null,
             flavors: null,
             instances: null,
-            test: null
+            volumes: null
         };
     },
     methods: {
@@ -134,8 +156,6 @@ export default {
             var axiosImages = this.axios.create({
                 headers: {
                     'x-auth-token': this.$store.state.token,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 }
             })
 
@@ -155,8 +175,6 @@ export default {
                 baseURL: "http://devstack.local:9696",
                 headers: {
                     'x-auth-token': this.$store.state.token,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 }
             })
 
@@ -175,8 +193,6 @@ export default {
             var axiosFlavors = this.axios.create({
                 headers: {
                     'x-auth-token': this.$store.state.token,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 }
             })
 
@@ -195,8 +211,6 @@ export default {
             var axiosInstances = this.axios.create({
                 headers: {
                     'x-auth-token': this.$store.state.token,
-                    // 'Content-Type': 'application/json',
-                    // 'Accept': 'application/json',
                 }
             })
 
@@ -210,13 +224,36 @@ export default {
                 console.log("Failed to load Instances:")
                 console.log(error)
             })
+        },
+        loadVolumes: function() {
+                var axiosVolumes = this.axios.create({
+                    baseURL: "http://devstack.local/volume/v3/" + this.$store.state.currentProject + "/volumes",
+                    headers: {
+                        'x-auth-token': this.$store.state.token,
+                    }
+                })
+
+                axiosVolumes.get()
+                .then(response => {
+                    this.volumes = response.data.servers;
+                    console.log("Volumes: ")
+                    console.log(this.volumes)
+                })
+                .catch(error => {
+                    console.log("Failed to load Volumes:")
+                    console.log(error)
+                })
         }
+    },
+    components: {
+        createInstance: CreateInstanceComponent
     },
     created(){
         this.loadImages();
         this.loadNetworks();
         this.loadFlavors();
         this.loadInstances();
+        this.loadVolumes();
     }   
     
 }

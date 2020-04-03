@@ -27,3 +27,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 npm install --save vuex
 npm install --save axios vue-axios
 npm install --save bootstrap-vue bootstrap
+npm install --save vue-multiselect
