@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div v-if="this.$store.state.token == null">
-      <img alt="Vue logo" src="./../assets/logo.png">
+      <img alt="Vue logo" src="./../assets/logo.png" />
       <login />
     </div>
 
@@ -12,37 +12,29 @@
         <projectDetails />
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-  import LoginComponent from "./login";
-  import MenuNavComponent from "./menuNav";
-  import ProjectDetailsComponent from "./projectDetails";
+import LoginComponent from "./login";
+import MenuNavComponent from "./menuNav";
+import ProjectDetailsComponent from "./projectDetails";
 
 export default {
-
   data: function() {
     return {
-        isloggin: false
-    }
+      isloggin: false
+    };
   },
-  props:[
-
-  ],
-  methods: {
-
-  },
-  components:{
+  props: [],
+  methods: {},
+  components: {
     login: LoginComponent,
     menuNav: MenuNavComponent,
     projectDetails: ProjectDetailsComponent
   },
-  created(){
-    
-  }
-}
+  created() {}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

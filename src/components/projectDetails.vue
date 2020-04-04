@@ -1,328 +1,376 @@
 <template>
-    <div>
-        <br/>
-        <table v-if="this.images != null && this.$store.state.selectedTab == 'images'" class="table table-striped">
-            <tr>
-                <th>IMAGES:</th>
-            </tr>
-        </table>
-            <table v-if="this.images != null && this.$store.state.selectedTab == 'images'" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Model</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Min Ram</th>
-                        <th>Min Disk</th>
-                        <th>Status</th>
-                        <th>Visibility</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="image in images" :key="image.id">
-                        <td>{{ image.id }}</td>
-                        <td>{{ image.hw_rng_model }}</td>
-                        <td>{{ image.name }}</td>
-                        <td>{{ image.size }}</td>
-                        <td>{{ image.min_ram }}</td>
-                        <td>{{ image.min_disk }}</td>
-                        <td>{{ image.status }}</td>
-                        <td>{{ image.visibility }}</td>
-                        <td>{{ image.created_at }}</td>
-                        <td>{{ image.updated_at }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table v-if="this.networks != null && this.$store.state.selectedTab =='networks'" class="table table-striped">
-                <tr>
-                    <th>NETWORKS:</th>
-                </tr>
-            </table>
-            <table v-if="this.networks != null && this.$store.state.selectedTab =='networks'" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>MTU</th>
-                        <th>Status</th>
-                        <th>Subnets</th>
-                        <th>Shared</th>
-                        <th>Description</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="network in networks" :key="network.id">
-                        <td>{{ network.id }}</td>
-                        <td>{{ network.name }}</td>
-                        <td>{{ network.mtu }}</td>
-                        <td>{{ network.status }}</td>
-                        <td>{{ network.subnets }}</td>
-                        <td>{{ network.shared }}</td>
-                        <td>{{ network.description }}</td>
-                        <td>{{ network.created_at }}</td>
-                        <td>{{ network.updated_at }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'" class="table table-striped">
-                <tr>
-                    <th>FLAVORS:</th>
-                </tr>
-            </table>
-            <table v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Ram</th>
-                        <th>Disk</th>
-                        <th>Virtual CPUs</th>
-                        <th>Public Access</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="flavor in flavors" :key="flavor.id">
-                        <td>{{ flavor.id }}</td>
-                        <td>{{ flavor.name }}</td>
-                        <td>{{ flavor.ram }}</td>
-                        <td>{{ flavor.disk }}</td>
-                        <td>{{ flavor.vcpus }}</td>
-                        <td>{{ flavor["os-flavor-access:is_public"] }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table v-if="this.instances != null && this.$store.state.selectedTab == 'instances'" class="table table-striped">
-                <tr>
-                    <th>Instances:</th>
-                </tr>
-            </table>
-            <table v-if="this.instances != null && this.$store.state.selectedTab == 'instances'" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Options</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="instance in instances" :key="instance.id">
-                        <td>{{ instance.id }}</td>
-                        <td>{{ instance.name }}</td>
-                        <td>
-                            <b-button v-on:click.prevent="editInstance(instance)">Edit Instance</b-button> |
-                            <b-button v-on:click.prevent="deleteInstance(instance)">Delete Instance</b-button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
-                <tr>
-                    <th>Volumes:</th>
-                </tr>
-            </table>
-            <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="volume in volumes" :key="volume.id">
-                        <td>{{ volume.id }}</td>
-                        <td>{{ volume.name }}</td>
-                    </tr>
-                </tbody>
-            </table>
+  <div>
+    <br />
+    <table
+      v-if="this.images != null && this.$store.state.selectedTab == 'images'"
+      class="table table-striped"
+    >
+      <tr>
+        <th>IMAGES:</th>
+      </tr>
+    </table>
+    <table
+      v-if="this.images != null && this.$store.state.selectedTab == 'images'"
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Model</th>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Min Ram</th>
+          <th>Min Disk</th>
+          <th>Status</th>
+          <th>Visibility</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="image in images" :key="image.id">
+          <td>{{ image.id }}</td>
+          <td>{{ image.hw_rng_model }}</td>
+          <td>{{ image.name }}</td>
+          <td>{{ image.size }}</td>
+          <td>{{ image.min_ram }}</td>
+          <td>{{ image.min_disk }}</td>
+          <td>{{ image.status }}</td>
+          <td>{{ image.visibility }}</td>
+          <td>{{ image.created_at }}</td>
+          <td>{{ image.updated_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-if="this.networks != null && this.$store.state.selectedTab =='networks'"
+      class="table table-striped"
+    >
+      <tr>
+        <th>NETWORKS:</th>
+      </tr>
+    </table>
+    <table
+      v-if="this.networks != null && this.$store.state.selectedTab =='networks'"
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>MTU</th>
+          <th>Status</th>
+          <th>Subnets</th>
+          <th>Shared</th>
+          <th>Description</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="network in networks" :key="network.id">
+          <td>{{ network.id }}</td>
+          <td>{{ network.name }}</td>
+          <td>{{ network.mtu }}</td>
+          <td>{{ network.status }}</td>
+          <td>{{ network.subnets }}</td>
+          <td>{{ network.shared }}</td>
+          <td>{{ network.description }}</td>
+          <td>{{ network.created_at }}</td>
+          <td>{{ network.updated_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'"
+      class="table table-striped"
+    >
+      <tr>
+        <th>FLAVORS:</th>
+      </tr>
+    </table>
+    <table
+      v-if="this.flavors != null && this.$store.state.selectedTab == 'flavors'"
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Ram</th>
+          <th>Disk</th>
+          <th>Virtual CPUs</th>
+          <th>Public Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="flavor in flavors" :key="flavor.id">
+          <td>{{ flavor.id }}</td>
+          <td>{{ flavor.name }}</td>
+          <td>{{ flavor.ram }}</td>
+          <td>{{ flavor.disk }}</td>
+          <td>{{ flavor.vcpus }}</td>
+          <td>{{ flavor["os-flavor-access:is_public"] }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-if="this.instances != null && this.$store.state.selectedTab == 'instances'"
+      class="table table-striped"
+    >
+      <tr>
+        <th>Instances:</th>
+      </tr>
+    </table>
+    <table
+      v-if="this.instances != null && this.$store.state.selectedTab == 'instances'"
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="instance in instances" :key="instance.id">
+          <td>{{ instance.id }}</td>
+          <td>{{ instance.name }}</td>
+          <td>
+            <b-button v-on:click.prevent="editInstance(instance)">Edit Instance</b-button>|
+            <b-button v-on:click.prevent="deleteInstance(instance)">Delete Instance</b-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'"
+      class="table table-striped"
+    >
+      <tr>
+        <th>Volumes:</th>
+      </tr>
+    </table>
+    <table
+      v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'"
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="volume in volumes" :key="volume.id">
+          <td>{{ volume.id }}</td>
+          <td>{{ volume.name }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-            <createInstance v-if="this.$store.state.selectedTab =='createInstance'" 
-                :networks="this.networks" :images="this.images" :flavors="this.flavors"
-                @reload-instances="reloadInstances" />
+    <createInstance
+      v-if="this.$store.state.selectedTab =='createInstance'"
+      :networks="this.networks"
+      :images="this.images"
+      :flavors="this.flavors"
+      @reload-instances="reloadInstances"
+    />
 
-            <editInstance v-if="this.$store.state.selectedTab =='editInstance'" 
-                :currentInstance="this.selectedInstance" :networks="this.networks" :images="this.images" 
-                :flavors="this.flavors" @reload-instances="reloadInstances" />
-            
-            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
-        </div>
+    <editInstance
+      v-if="this.$store.state.selectedTab =='editInstance'"
+      :currentInstance="this.selectedInstance"
+      :networks="this.networks"
+      :images="this.images"
+      :flavors="this.flavors"
+      @reload-instances="reloadInstances"
+    />
+
+    <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
+  </div>
 </template>
 <script>
 import CreateInstanceComponent from "./createInstance";
 import EditInstanceComponent from "./editInstance";
 import CreateVolumeComponent from "./createVolume";
 
-
 export default {
-    props: [],
-    data: function() {
-        return {
-            images: null,
-            networks: null,
-            flavors: null,
-            instances: null,
-            selectedInstance: null,
-            volumes: null
-        };
-    },
-    methods: {
-        loadImages: function() {
-            var axiosImages = this.axios.create({
-                headers: {
-                    'x-auth-token': this.$store.state.token,
-                }
-            })
-
-            axiosImages.get("/image/v2/images")
-            .then(response => {
-                this.images = response.data.images;
-                console.log("Images: ")
-                console.log(this.images)
-            })
-            .catch(error => {
-                console.log("Failed to load Images")
-                console.log(error)
-            })
-        },
-        loadNetworks: function() {
-            var axiosNetworks = this.axios.create({
-                baseURL: "http://devstack.local:9696",
-                headers: {
-                    'x-auth-token': this.$store.state.token,
-                }
-            })
-
-            axiosNetworks.get("/v2.0/networks")
-            .then(response => {
-                this.networks = response.data.networks;
-                console.log("Networks: ")
-                console.log(this.networks)
-            })
-            .catch(error => {
-                console.log("Failed to load Networks")
-                console.log(error)
-            })
-        },
-        loadFlavors: function() {
-            var axiosFlavors = this.axios.create({
-                headers: {
-                    'x-auth-token': this.$store.state.token,
-                }
-            })
-
-            axiosFlavors.get("/compute/v2.1/flavors/detail")
-            .then(response => {
-                this.flavors = response.data.flavors;
-                console.log("Flavors: ")
-                console.log(this.flavors)
-            })
-            .catch(error => {
-                console.log("Failed to load Flavors")
-                console.log(error)
-            })
-        },
-        loadInstances: function() {
-            var axiosInstances = this.axios.create({
-                headers: {
-                    'x-auth-token': this.$store.state.token,
-                }
-            })
-
-            axiosInstances.get("/compute/v2.1/servers")
-            .then(response => {
-                this.instances = response.data.servers;
-                console.log("Instances: ")
-                console.log(this.instances)
-            })
-            .catch(error => {
-                console.log("Failed to load Instances:")
-                console.log(error)
-            })
-        },
-        loadVolumes: function() {
-                var axiosVolumes = this.axios.create({
-                    baseURL: "http://devstack.local/volume/v3/" + this.$store.state.currentProject + "/volumes",
-                    headers: {
-                        'x-auth-token': this.$store.state.token,
-                    }
-                })
-                axiosVolumes.get()
-                .then(response => {
-                    this.volumes = response.data.volumes;
-                    console.log("Volumes: ")
-                    console.log(this.volumes)
-                })
-                .catch(error => {
-                    console.log("Failed to load Volumes:")
-                    console.log(error)
-                })
-        },
-        selectTab: function(tab) {
-            this.$store.commit("setSelectedTab", tab);
-        },
-        editInstance: function(instance) {
-            console.log(instance)
-
-            var axiosEditInstance = this.axios.create({
-                headers: {
-                    'x-auth-token': this.$store.state.token
-                }
-            })
-
-            axiosEditInstance.get("/compute/v2.1/servers/" + instance.id)
-            .then(response => {
-                console.log("Instance Edit")
-                this.selectedInstance = response.data.server;
-
-                console.log(this.selectedInstance)
-                this.$store.commit("setSelectedTab", "editInstance");
-            })
-            .catch(error => {
-                console.log("Failed to delete Selected Instance")
-                console.log(error)
-            })
-        },
-        deleteInstance: function(instance) {
-            var axiosDeleteInstance = this.axios.create({
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
-                    "Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
-                    'x-auth-token': this.$store.state.token
-                }
-            })
-
-            axiosDeleteInstance.delete("/compute/v2.1/servers/" + instance.id)
-            .then(response => {
-                console.log(response)
-                this.reloadInstances();
-            })
-            .catch(error => {
-                console.log("Failed to delete Selected Instance")
-                console.log(error)
-            })
-        },
-        reloadInstances() {
-            this.loadInstances();
-            this.selectTab("instances");
+  props: [],
+  data: function() {
+    return {
+      images: null,
+      networks: null,
+      flavors: null,
+      instances: null,
+      selectedInstance: null,
+      volumes: null
+    };
+  },
+  methods: {
+    loadImages: function() {
+      var axiosImages = this.axios.create({
+        headers: {
+          "x-auth-token": this.$store.state.token
         }
+      });
+
+      axiosImages
+        .get("/image/v2/images")
+        .then(response => {
+          this.images = response.data.images;
+          console.log("Images: ");
+          console.log(this.images);
+        })
+        .catch(error => {
+          console.log("Failed to load Images");
+          console.log(error);
+        });
     },
-    components: {
-        createInstance: CreateInstanceComponent,
-        editInstance: EditInstanceComponent,
-        createVolume: CreateVolumeComponent
+    loadNetworks: function() {
+      var axiosNetworks = this.axios.create({
+        baseURL: "http://devstack.local:9696",
+        headers: {
+          "x-auth-token": this.$store.state.token
+        }
+      });
+
+      axiosNetworks
+        .get("/v2.0/networks")
+        .then(response => {
+          this.networks = response.data.networks;
+          console.log("Networks: ");
+          console.log(this.networks);
+        })
+        .catch(error => {
+          console.log("Failed to load Networks");
+          console.log(error);
+        });
     },
-    created(){
-        this.loadImages();
-        this.loadNetworks();
-        this.loadFlavors();
-        this.loadInstances();
-        this.loadVolumes();
-    }   
-    
-}
+    loadFlavors: function() {
+      var axiosFlavors = this.axios.create({
+        headers: {
+          "x-auth-token": this.$store.state.token
+        }
+      });
+
+      axiosFlavors
+        .get("/compute/v2.1/flavors/detail")
+        .then(response => {
+          this.flavors = response.data.flavors;
+          console.log("Flavors: ");
+          console.log(this.flavors);
+        })
+        .catch(error => {
+          console.log("Failed to load Flavors");
+          console.log(error);
+        });
+    },
+    loadInstances: function() {
+      var axiosInstances = this.axios.create({
+        headers: {
+          "x-auth-token": this.$store.state.token
+        }
+      });
+
+      axiosInstances
+        .get("/compute/v2.1/servers")
+        .then(response => {
+          this.instances = response.data.servers;
+          console.log("Instances: ");
+          console.log(this.instances);
+        })
+        .catch(error => {
+          console.log("Failed to load Instances:");
+          console.log(error);
+        });
+    },
+    loadVolumes: function() {
+      var axiosVolumes = this.axios.create({
+        baseURL:
+          "http://devstack.local/volume/v3/" +
+          this.$store.state.currentProject +
+          "/volumes",
+        headers: {
+          "x-auth-token": this.$store.state.token
+        }
+      });
+      axiosVolumes
+        .get()
+        .then(response => {
+          this.volumes = response.data.volumes;
+          console.log("Volumes: ");
+          console.log(this.volumes);
+        })
+        .catch(error => {
+          console.log("Failed to load Volumes:");
+          console.log(error);
+        });
+    },
+    selectTab: function(tab) {
+      this.$store.commit("setSelectedTab", tab);
+    },
+    editInstance: function(instance) {
+      console.log(instance);
+
+      var axiosEditInstance = this.axios.create({
+        headers: {
+          "x-auth-token": this.$store.state.token
+        }
+      });
+
+      axiosEditInstance
+        .get("/compute/v2.1/servers/" + instance.id)
+        .then(response => {
+          console.log("Instance Edit");
+          this.selectedInstance = response.data.server;
+
+          console.log(this.selectedInstance);
+          this.$store.commit("setSelectedTab", "editInstance");
+        })
+        .catch(error => {
+          console.log("Failed to delete Selected Instance");
+          console.log(error);
+        });
+    },
+    deleteInstance: function(instance) {
+      var axiosDeleteInstance = this.axios.create({
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
+          "Access-Control-Allow-Headers":
+            "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+          "x-auth-token": this.$store.state.token
+        }
+      });
+
+      axiosDeleteInstance
+        .delete("/compute/v2.1/servers/" + instance.id)
+        .then(response => {
+          console.log(response);
+          this.reloadInstances();
+        })
+        .catch(error => {
+          console.log("Failed to delete Selected Instance");
+          console.log(error);
+        });
+    },
+    reloadInstances() {
+      this.loadInstances();
+      this.selectTab("instances");
+    }
+  },
+  components: {
+    createInstance: CreateInstanceComponent,
+    editInstance: EditInstanceComponent,
+    createVolume: CreateVolumeComponent
+  },
+  created() {
+    this.loadImages();
+    this.loadNetworks();
+    this.loadFlavors();
+    this.loadInstances();
+    this.loadVolumes();
+  }
+};
 </script>
