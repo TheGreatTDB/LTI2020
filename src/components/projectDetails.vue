@@ -178,22 +178,20 @@
       @reload-instances="reloadInstances"
     />
 
-    <editInstance
-      v-if="this.$store.state.selectedTab =='editInstance'"
-      :currentInstance="this.selectedInstance"
-      :networks="this.networks"
-      :images="this.images"
-      :flavors="this.flavors"
-      @reload-instances="reloadInstances"
-    />
+            <editInstance v-if="this.$store.state.selectedTab =='editInstance'" 
+                :currentInstance="this.selectedInstance" :networks="this.networks" :images="this.images" 
+                :flavors="this.flavors" @reload-instances="reloadInstances" />
+            
+            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
 
-    <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
-  </div>
+             <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
+        </div>
 </template>
 <script>
 import CreateInstanceComponent from "./createInstance";
 import EditInstanceComponent from "./editInstance";
 import CreateVolumeComponent from "./createVolume";
+import UploadImageComponent from "./uploadImage";
 
 export default {
   props: [],
@@ -355,22 +353,19 @@ export default {
           console.log(error);
         });
     },
-    reloadInstances() {
-      this.loadInstances();
-      this.selectTab("instances");
-    }
-  },
-  components: {
-    createInstance: CreateInstanceComponent,
-    editInstance: EditInstanceComponent,
-    createVolume: CreateVolumeComponent
-  },
-  created() {
-    this.loadImages();
-    this.loadNetworks();
-    this.loadFlavors();
-    this.loadInstances();
-    this.loadVolumes();
-  }
-};
+    components: {
+        createInstance: CreateInstanceComponent,
+        editInstance: EditInstanceComponent,
+        createVolume: CreateVolumeComponent,
+        uploadImage: UploadImageComponent
+    },
+    created(){
+        this.loadImages();
+        this.loadNetworks();
+        this.loadFlavors();
+        this.loadInstances();
+        this.loadVolumes();
+    }   
+    
+}
 </script>
