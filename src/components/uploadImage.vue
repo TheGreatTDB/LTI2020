@@ -33,11 +33,13 @@ export default {
             
 
             axiosUploadImage.post( '/image/v2/images', formData)
-            .then(function(){
+            .then(response => {
                 console.log('SUCCESS!!');
+                console.log(response);
             })
-            .catch(function(){
+            .catch(error => {
                 console.log('FAILURE!!');
+                console.log(error);
             });
         }        
     }
