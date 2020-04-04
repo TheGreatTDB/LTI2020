@@ -289,20 +289,16 @@ export default {
         deleteInstance: function(instance) {
             var axiosDeleteInstance = this.axios.create({
                 headers: {
-                    'User-Agent': 'PostmanRuntime/7.24.0',
-                    'Accept': '*/*',
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Connection': 'keep-alive',
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
+                    "Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
                     'x-auth-token': this.$store.state.token
                 }
             })
 
             axiosDeleteInstance.delete("/compute/v2.1/servers/" + instance.id)
             .then(response => {
-                response = null;
-                response + 1;
-                console.log("Instance Deleted")
-
+                console.log(response)
                 this.reloadInstances();
             })
             .catch(error => {
