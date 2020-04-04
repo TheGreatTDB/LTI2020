@@ -149,12 +149,15 @@
                 :flavors="this.flavors" @reload-instances="reloadInstances" />
             
             <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
+
+            <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
         </div>
 </template>
 <script>
 import CreateInstanceComponent from "./createInstance";
 import EditInstanceComponent from "./editInstance";
 import CreateVolumeComponent from "./createVolume";
+import UploadImageComponent from "./uploadImage";
 
 
 export default {
@@ -314,7 +317,8 @@ export default {
     components: {
         createInstance: CreateInstanceComponent,
         editInstance: EditInstanceComponent,
-        createVolume: CreateVolumeComponent
+        createVolume: CreateVolumeComponent,
+        uploadImage: UploadImageComponent
     },
     created(){
         this.loadImages();
