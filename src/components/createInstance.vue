@@ -35,8 +35,8 @@ export default {
             axiosCreateInstance.post("/compute/v2.1/servers", {
                 server: {
                     name: "Teste Create function",
-                    imageRef: "9c7991a8-ba6b-40fe-a211-1824d59f300a",
-                    flavorRef: "http://openstack.example.com/flavors/1",
+                    imageRef: "b28115a6-4661-47fa-9bf3-a658620b456b",
+                    flavorRef: "http://openstack.example.com/flavors/2",
                     networks : this.instanceNetworksUuid
                 }
             })

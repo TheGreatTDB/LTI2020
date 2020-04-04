@@ -117,7 +117,7 @@
             </table>
             <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
                 <tr>
-                    <th>Instances:</th>
+                    <th>Volumes:</th>
                 </tr>
             </table>
             <table v-if="this.volumes != null && this.$store.state.selectedTab == 'volumes'" class="table table-striped">
@@ -135,10 +135,14 @@
                 </tbody>
             </table>
             <createInstance v-if="this.$store.state.selectedTab =='createInstance'" :networks="this.networks"/>
+            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
+
         </div>
 </template>
 <script>
 import CreateInstanceComponent from "./createInstance";
+import CreateVolumeComponent from "./createVolume";
+
 
 export default {
     props: [],
@@ -232,10 +236,9 @@ export default {
                         'x-auth-token': this.$store.state.token,
                     }
                 })
-
                 axiosVolumes.get()
                 .then(response => {
-                    this.volumes = response.data.servers;
+                    this.volumes = response.data.volumes;
                     console.log("Volumes: ")
                     console.log(this.volumes)
                 })
@@ -246,7 +249,8 @@ export default {
         }
     },
     components: {
-        createInstance: CreateInstanceComponent
+        createInstance: CreateInstanceComponent,
+        createVolume: CreateVolumeComponent
     },
     created(){
         this.loadImages();

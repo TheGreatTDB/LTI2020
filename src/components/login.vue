@@ -20,7 +20,7 @@
                     @input="$emit('input', $event.target.value)"
                 />
             </div>
-            <hr />
+            <br/>
             <button type="submit" class="btn btn-primary" v-on:click.prevent="userLogin()">
                 Login
             </button>

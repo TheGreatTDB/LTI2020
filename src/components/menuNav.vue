@@ -3,7 +3,7 @@
         <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
             <a class="navbar-brand mr-1" >
                 <h1 style="color:white;">
-                    <img v-on:click.prevent="profile()" height="60" width="60" src="./../assets/back.png">
+                    <img v-on:click.prevent="profile()" height="60" width="60" src="./../assets/OpenStack-Logo-Mark.png">
                     Welcome, {{ this.$store.state.user.username }}
                 </h1>
             </a>
@@ -14,6 +14,10 @@
 
             <div v-if="projectSelected != null">
               <b-button v-on:click.prevent="selectTab('createInstance')">Create Instance</b-button>
+            </div>  
+
+            <div v-if="projectSelected != null">
+              <b-button v-on:click.prevent="selectTab('createVolume')">Create Volume</b-button>
             </div>  
 
             <!-- Navbar Search -->
