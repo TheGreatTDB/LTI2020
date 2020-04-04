@@ -334,11 +334,11 @@ export default {
     deleteInstance: function(instance) {
       var axiosDeleteInstance = this.axios.create({
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
-          "Access-Control-Allow-Headers":
-            "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
-          "x-auth-token": this.$store.state.token
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Headers":  "Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+            "x-auth-token": this.$store.state.token
         }
       });
 
@@ -365,7 +365,7 @@ export default {
         this.loadFlavors();
         this.loadInstances();
         this.loadVolumes();
-    }   
-    
+    }
+}
 }
 </script>
