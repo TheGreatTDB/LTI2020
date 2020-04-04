@@ -106,12 +106,17 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="instance in instances" :key="instance.id">
                         <td>{{ instance.id }}</td>
                         <td>{{ instance.name }}</td>
+                        <td>
+                            <b-button v-on:click.prevent="editInstance(instance)">Edit Instance</b-button> |
+                            <b-button v-on:click.prevent="deleteInstance(instance)">Delete Instance</b-button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -134,13 +139,21 @@
                     </tr>
                 </tbody>
             </table>
-            <createInstance v-if="this.$store.state.selectedTab =='createInstance'" :networks="this.networks"/>
-            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
 
+            <createInstance v-if="this.$store.state.selectedTab =='createInstance'" 
+                :networks="this.networks" :images="this.images" :flavors="this.flavors"
+                @reload-instances="reloadInstances" />
+
+            <editInstance v-if="this.$store.state.selectedTab =='editInstance'" 
+                :currentInstance="this.selectedInstance" :networks="this.networks" :images="this.images" 
+                :flavors="this.flavors" @reload-instances="reloadInstances" />
+            
+            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
         </div>
 </template>
 <script>
 import CreateInstanceComponent from "./createInstance";
+import EditInstanceComponent from "./editInstance";
 import CreateVolumeComponent from "./createVolume";
 
 
@@ -152,6 +165,7 @@ export default {
             networks: null,
             flavors: null,
             instances: null,
+            selectedInstance: null,
             volumes: null
         };
     },
@@ -246,10 +260,64 @@ export default {
                     console.log("Failed to load Volumes:")
                     console.log(error)
                 })
+        },
+        selectTab: function(tab) {
+            this.$store.commit("setSelectedTab", tab);
+        },
+        editInstance: function(instance) {
+            console.log(instance)
+
+            var axiosEditInstance = this.axios.create({
+                headers: {
+                    'x-auth-token': this.$store.state.token
+                }
+            })
+
+            axiosEditInstance.get("/compute/v2.1/servers/" + instance.id)
+            .then(response => {
+                console.log("Instance Edit")
+                this.selectedInstance = response.data.server;
+
+                console.log(this.selectedInstance)
+                this.$store.commit("setSelectedTab", "editInstance");
+            })
+            .catch(error => {
+                console.log("Failed to delete Selected Instance")
+                console.log(error)
+            })
+        },
+        deleteInstance: function(instance) {
+            var axiosDeleteInstance = this.axios.create({
+                headers: {
+                    'User-Agent': 'PostmanRuntime/7.24.0',
+                    'Accept': '*/*',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive',
+                    'x-auth-token': this.$store.state.token
+                }
+            })
+
+            axiosDeleteInstance.delete("/compute/v2.1/servers/" + instance.id)
+            .then(response => {
+                response = null;
+                response + 1;
+                console.log("Instance Deleted")
+
+                this.reloadInstances();
+            })
+            .catch(error => {
+                console.log("Failed to delete Selected Instance")
+                console.log(error)
+            })
+        },
+        reloadInstances() {
+            this.loadInstances();
+            this.selectTab("instances");
         }
     },
     components: {
         createInstance: CreateInstanceComponent,
+        editInstance: EditInstanceComponent,
         createVolume: CreateVolumeComponent
     },
     created(){

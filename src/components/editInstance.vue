@@ -26,6 +26,7 @@
 <script>
 export default {
     props: [
+        'currentInstance',
         'networks',
         'images',
         'flavors'
@@ -41,7 +42,7 @@ export default {
     },
     methods: {
         createInstance: function() {
-            var axiosCreateInstance = this.axios.create({
+            var axiosEditInstance = this.axios.create({
                 headers: {
                     'x-auth-token': this.$store.state.token,
                 }
@@ -49,7 +50,7 @@ export default {
 
             this.sortNetworks();
 
-            axiosCreateInstance.post("/compute/v2.1/servers", {
+            axiosEditInstance.post("/compute/v2.1/servers", {
                 server: {
                     name: this.instanceName,
                     imageRef: this.instanceImageRef.id,
