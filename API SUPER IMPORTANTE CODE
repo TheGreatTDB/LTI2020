@@ -33,6 +33,12 @@ HEADERS:[
 ]
 
 
+Se quiserem fazer um dashboard podem obter parte da informação via:
+
+get /compute/v2.1/limits 
+
+get /volume/v3/{project_id}/limits
+
 
 ######################################################################          API LISTAR INSTANCES
 GET devstack.local/compute/v2.1/servers
