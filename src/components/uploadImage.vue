@@ -24,18 +24,17 @@ export default {
       console.log(this.imageFile);
     },
     uploadImage: function(idimage) {
-      let formData = new FormData();
-      formData.append("image", this.imageFile);
-
       var axiosUploadImage = this.axios.create({
         headers: {
           "Content-Type": "application/octet-stream",
+          Accept: "application/octet-stream",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+
           "x-auth-token": this.$store.state.token
-        },
-        data: {}
+        }
       });
       axiosUploadImage
-        .put("/image/v2/images/" + idimage + "/file", formData)
+        .put("/image/v2/images/" + idimage + "/file", this.imageFile)
         .then(response => {
           console.log("SUCCESS!!");
           console.log(response);
@@ -53,7 +52,9 @@ export default {
 
       axiosIdImage
         .post("image/v2/images", {
-          name: this.nameImage
+          name: this.nameImage,
+          disk_format: "iso",
+          container_format: "bare"
         })
         .then(response => {
           console.log(response.data.id);
