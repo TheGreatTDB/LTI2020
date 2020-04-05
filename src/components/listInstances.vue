@@ -56,7 +56,6 @@ export default {
   },
   created() {
     this.loadInstances();
-    console.log("lol");
   }
 };
 </script>
