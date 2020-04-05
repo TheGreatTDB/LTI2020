@@ -15,7 +15,8 @@
 export default {
   data: function() {
     return {
-      imageFile: ""
+      imageFile: "",
+      nameImage: ""
     };
   },
   methods: {
@@ -24,6 +25,12 @@ export default {
       console.log(this.imageFile);
     },
     uploadImage: function(idimage) {
+<<<<<<< Updated upstream
+=======
+      let formData = new FormData();
+      formData.append('file', this.imageFile);
+
+>>>>>>> Stashed changes
       var axiosUploadImage = this.axios.create({
         headers: {
           "Content-Type": "application/octet-stream",
@@ -33,6 +40,7 @@ export default {
           "x-auth-token": this.$store.state.token
         }
       });
+      
       axiosUploadImage
         .put("/image/v2/images/" + idimage + "/file", this.imageFile)
         .then(response => {
@@ -50,14 +58,22 @@ export default {
         }
       });
 
+<<<<<<< Updated upstream
       axiosIdImage
         .post("image/v2/images", {
           name: this.nameImage,
           disk_format: "iso",
           container_format: "bare"
+=======
+      axiosIdImage.post("image/v2/images", {
+          name: this.nameImage,
+          visibility: "shared",
+          container_format: "bare",
+          disk_format:"iso"
+>>>>>>> Stashed changes
         })
         .then(response => {
-          console.log(response.data.id);
+          console.log(response);
           this.uploadImage(response.data.id);
         })
         .catch(error => {
