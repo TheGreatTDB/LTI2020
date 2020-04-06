@@ -2,13 +2,28 @@
   <div>
     <br />
     <label>
-      File
-      <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
-    </label>
-    <p>Image Name:</p>
-    <input v-model="nameImage" placeholder="Image Name" />
+      <div>
+        <b-form-input v-model="nameImage" placeholder="Image Name"></b-form-input>
+      </div>
+      <div>
+        <b-form-group label="Image File:" label-for="file-large" label-cols-sm="0" label-size="lg">
+          <b-form-file
+            v-model="file"
+            placeholder="Choose Image"
+            drop-placeholder="Drop file here..."
+            type="file"
+            id="file"
+            ref="file"
+            v-on:change="handleFileUpload()"
+          ></b-form-file>
+        </b-form-group>
+      </div>
 
-    <b-button v-on:click.prevent="getImageID()">Upload Image</b-button>
+      <!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" /> -->
+    </label>
+    <div>
+      <b-button variant="outline-primary" v-on:click.prevent="getImageID()">Upload Image</b-button>
+    </div>
   </div>
 </template>
 <script>
@@ -16,18 +31,16 @@ export default {
   data: function() {
     return {
       imageFile: "",
-      nameImage: ""
+      nameImage: "",
+      file: null
     };
   },
   methods: {
     handleFileUpload: function() {
-      this.imageFile = this.$refs.file.files[0];
-      console.log(this.imageFile);
+      // this.file = this.$refs.file.files[0];
+      console.log(this.file);
     },
     uploadImage: function(idimage) {
-      let formData = new FormData();
-      formData.append('file', this.imageFile);
-
       var axiosUploadImage = this.axios.create({
         headers: {
           "Content-Type": "application/octet-stream",
@@ -37,9 +50,9 @@ export default {
           "x-auth-token": this.$store.state.token
         }
       });
-      
+
       axiosUploadImage
-        .put("/image/v2/images/" + idimage + "/file", this.imageFile)
+        .put("/image/v2/images/" + idimage + "/file", this.file)
         .then(response => {
           console.log("SUCCESS!!");
           console.log(response);
@@ -55,11 +68,12 @@ export default {
         }
       });
 
-      axiosIdImage.post("image/v2/images", {
+      axiosIdImage
+        .post("image/v2/images", {
           name: this.nameImage,
           visibility: "shared",
           container_format: "bare",
-          disk_format:"iso"
+          disk_format: "iso"
         })
         .then(response => {
           console.log(response);

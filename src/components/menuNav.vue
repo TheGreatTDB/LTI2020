@@ -17,18 +17,25 @@
         <i class="fas fa-bars"></i>
       </button>
 
-            <div v-if="projectSelected != null">
-              <b-button v-on:click.prevent="selectTab('createInstance')">Create Instance</b-button>
-               | 
-            </div>  
+      <div v-if="projectSelected != null">
+        <b-button
+          variant="outline-danger"
+          v-on:click.prevent="selectTab('createInstance')"
+        >Create Instance</b-button>|
+      </div>
 
-            <div v-if="projectSelected != null">
-              <b-button v-on:click.prevent="selectTab('createVolume')">Create Volume</b-button>
-               | 
-            </div>
-            <div v-if="projectSelected != null">
-              <b-button v-on:click.prevent="selectTab('uploadImage')">Upload Image</b-button>
-            </div>  
+      <div v-if="projectSelected != null">
+        <b-button
+          variant="outline-danger"
+          v-on:click.prevent="selectTab('createVolume')"
+        >Create Volume</b-button>|
+      </div>
+      <div v-if="projectSelected != null">
+        <b-button
+          variant="outline-danger"
+          v-on:click.prevent="selectTab('uploadImage')"
+        >Upload Image</b-button>
+      </div>
 
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
