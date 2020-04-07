@@ -15,6 +15,7 @@ export default new Vuex.Store({
     currentProject: null,
     refresh: false,
     selectedTab: "instances",
+    load: false
   },
   mutations: {
     setToken: (state, token) => {
@@ -50,5 +51,8 @@ export default new Vuex.Store({
     setSelectedTab: (state, tab) => {
       state.selectedTab = tab;
     },
+    loadingComplete: (state, aux) => {
+      state.load = aux;
+    }
   },
 });

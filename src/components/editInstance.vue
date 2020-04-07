@@ -3,6 +3,7 @@
     <br />
     <p>Instance Name:</p>
     <input v-model="instanceName" placeholder="Instance Name" class="table table-striped" />
+    
     <div class="table table-striped">
       <p>Select Image:</p>
       <multiselect
@@ -40,6 +41,7 @@
         </template>
       </multiselect>
 
+    <!--
       <p>Select(s) Network(s):</p>
       <multiselect
         v-model="instanceNetworks"
@@ -57,8 +59,8 @@
           >{{ values.length }} options selected</span>
         </template>
       </multiselect>
+      -->
     </div>
-
     <b-button v-on:click.prevent="createInstance()">Create Instance</b-button>
   </div>
 </template>
@@ -70,8 +72,8 @@ export default {
       instanceName: null,
       instanceImageRef: null,
       instanceFlavorRef: null,
-      instanceNetworks: null,
-      instanceNetworksUuid: []
+      //instanceNetworks: null,
+      //instanceNetworksUuid: []
     };
   },
   methods: {
@@ -82,17 +84,17 @@ export default {
         }
       });
 
-      this.sortNetworks();
+      //this.sortNetworks();
 
       axiosEditInstance
-        .post("/compute/v2.1/servers", {
+        .put("/compute/v2.1/servers/" + this.currentInstance.id, {
           server: {
             name: this.instanceName,
             imageRef: this.instanceImageRef.id,
             flavorRef:
               "http://openstack.example.com/flavors/" +
-              this.instanceFlavorRef.id,
-            networks: this.instanceNetworksUuid
+              this.instanceFlavorRef.id
+            //networks: this.instanceNetworksUuid
           }
         })
         .then(response => {
@@ -104,6 +106,7 @@ export default {
           console.log(error);
         });
     },
+    /*
     sortNetworks: function() {
       console.log(this.instanceNetworks);
 
@@ -114,6 +117,18 @@ export default {
 
       console.log(this.instanceNetworksUuid);
     }
+    */
+  },
+  created(){
+    console.log("INSIDE EDIT INSTANCE")
+    console.log(this.currentInstance)
+
+    this.instanceName = this.currentInstance.name;
+    this.instanceImageRef = this.currentInstance.image;
+    this.instanceNetworks = this.currentInstance.networks;
+    this.instanceFlavorRef = this.currentInstance.flavor;
+
+
   }
 };
 </script>

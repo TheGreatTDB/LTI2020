@@ -8,6 +8,8 @@ import Multiselect from "vue-multiselect";
 
 import App from "./App.vue";
 
+import Toasted from 'vue-toasted';
+
 import store from "./store/auth";
 
 import axios from "axios";
@@ -18,6 +20,7 @@ axios.defaults.baseURL = "http://devstack.local";
 Vue.use(VueAxios, axios);
 Vue.component("multiselect", Multiselect);
 Vue.use(BootstrapVue, IconsPlugin);
+Vue.use(Toasted);
 
 Vue.config.productionTip = false;
 

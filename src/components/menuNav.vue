@@ -17,20 +17,20 @@
         <i class="fas fa-bars"></i>
       </button>
 
-      <div v-if="projectSelected != null">
+      <div v-if="projectSelected != null && this.$store.state.load == true">
         <b-button
           variant="outline-danger"
           v-on:click.prevent="selectTab('createInstance')"
         >Create Instance</b-button>|
       </div>
 
-      <div v-if="projectSelected != null">
+      <div v-if="projectSelected != null && this.$store.state.load == true">
         <b-button
           variant="outline-danger"
           v-on:click.prevent="selectTab('createVolume')"
         >Create Volume</b-button>|
       </div>
-      <div v-if="projectSelected != null">
+      <div v-if="projectSelected != null && this.$store.state.load == true">
         <b-button
           variant="outline-danger"
           v-on:click.prevent="selectTab('uploadImage')"
@@ -58,7 +58,7 @@
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
         <b-navbar-nav>
-          <b-nav-item-dropdown v-if="projectSelected != null" text="Show Details" right>
+          <b-nav-item-dropdown v-if="projectSelected != null && this.$store.state.load == true" text="Show Details" right>
             <b-dropdown-item v-on:click.prevent="selectTab('instances')">Instances</b-dropdown-item>
             <b-dropdown-item v-on:click.prevent="selectTab('images')">Images</b-dropdown-item>
             <b-dropdown-item v-on:click.prevent="selectTab('networks')">Networks</b-dropdown-item>
@@ -112,7 +112,6 @@ export default {
         .get("/identity/v3/auth/projects")
         .then(response => {
           this.projects = response.data.projects;
-          console.log(this.projects);
         })
         .catch(error => {
           console.log("Failed to load Projects");

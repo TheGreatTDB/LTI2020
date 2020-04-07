@@ -148,7 +148,8 @@
                 :currentInstance="this.selectedInstance" :networks="this.networks" :images="this.images" 
                 :flavors="this.flavors" @reload-instances="reloadInstances" />
             
-            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" />
+            <createVolume v-if="this.$store.state.selectedTab =='createVolume'" 
+                @reload-volumes="reloadVolumes"/>
 
             <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
         </div>
@@ -168,8 +169,9 @@ export default {
             networks: null,
             flavors: null,
             instances: null,
+            volumes: null,
             selectedInstance: null,
-            volumes: null
+            loaded: 0
         };
     },
     methods: {
@@ -183,8 +185,12 @@ export default {
             axiosImages.get("/image/v2/images")
             .then(response => {
                 this.images = response.data.images;
-                console.log("Images: ")
-                console.log(this.images)
+                this.loaded++;
+
+                if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
             })
             .catch(error => {
                 console.log("Failed to load Images")
@@ -202,8 +208,12 @@ export default {
             axiosNetworks.get("/v2.0/networks")
             .then(response => {
                 this.networks = response.data.networks;
-                console.log("Networks: ")
-                console.log(this.networks)
+                this.loaded++;
+
+                if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
             })
             .catch(error => {
                 console.log("Failed to load Networks")
@@ -220,8 +230,12 @@ export default {
             axiosFlavors.get("/compute/v2.1/flavors/detail")
             .then(response => {
                 this.flavors = response.data.flavors;
-                console.log("Flavors: ")
-                console.log(this.flavors)
+                this.loaded++;
+
+                if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
             })
             .catch(error => {
                 console.log("Failed to load Flavors")
@@ -238,8 +252,12 @@ export default {
             axiosInstances.get("/compute/v2.1/servers")
             .then(response => {
                 this.instances = response.data.servers;
-                console.log("Instances: ")
-                console.log(this.instances)
+                this.loaded++;
+
+                if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
             })
             .catch(error => {
                 console.log("Failed to load Instances:")
@@ -256,8 +274,12 @@ export default {
                 axiosVolumes.get()
                 .then(response => {
                     this.volumes = response.data.volumes;
-                    console.log("Volumes: ")
-                    console.log(this.volumes)
+                    this.loaded++;
+
+                    if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
                 })
                 .catch(error => {
                     console.log("Failed to load Volumes:")
@@ -312,6 +334,10 @@ export default {
         reloadInstances() {
             this.loadInstances();
             this.selectTab("instances");
+        },
+        reloadVolumes(){
+            this.loadVolumes();
+            this.selectTab("volumes");
         }
     },
     components: {
@@ -321,6 +347,9 @@ export default {
         uploadImage: UploadImageComponent
     },
     created(){
+        this.$toasted.show('Loading...').goAway(2000);
+        this.$store.commit('loadingComplete', false);
+
         this.loadImages();
         this.loadNetworks();
         this.loadFlavors();

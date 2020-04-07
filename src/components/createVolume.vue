@@ -16,9 +16,12 @@
 </template>
 <script>
 export default {
-  // props: ['networks'],
   data: function() {
-    return {};
+    return {
+      nameVolume: "",
+      sizeVolume: "",
+      descriptionVolume: "",
+    };
   },
   methods: {
     createVolume: function() {
@@ -50,6 +53,7 @@ export default {
         })
         .then(response => {
           console.log(response);
+          this.$emit('reload-volumes')
         })
         .catch(error => {
           console.log("Failed to create Volume");

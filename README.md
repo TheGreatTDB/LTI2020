@@ -28,3 +28,4 @@ npm install --save vuex
 npm install --save axios vue-axios
 npm install --save bootstrap-vue bootstrap
 npm install --save vue-multiselect
+npm install --save vue-toasted

@@ -69,25 +69,12 @@ export default {
           this.token = response.headers["x-subject-token"];
           this.$store.commit("setToken", this.token);
 
-          this.makeToast();
+          this.$toasted.show('Login Successfull!').goAway(2000)
         })
         .catch(error => {
-          console.log("LOGIN ERROR");
-          console.log(error);
-          this.ErrorToast(error);
+          this.$toasted.show('Login Error!').goAway(2000);
+          this.$toasted.show(error).goAway(2000);
         });
-    },
-    makeToast() {
-      this.$bvToast.toast(`Login Successfull `, {
-        title: "Login Successfull",
-        autoHideDelay: 5000
-      });
-    },
-    ErrorToast(error) {
-      this.$bvToast.toast(`${error}`, {
-        title: "Login Error",
-        autoHideDelay: 5000
-      });
     }
   }
 };
