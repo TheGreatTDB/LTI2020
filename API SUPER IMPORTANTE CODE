@@ -1,13 +1,7 @@
-FICOU A FALTAR:[
-    • Fazer upload de imagens de OS
-]
-
 GET devstack.local/image/v2/images
 {
     "name": "Ubuntu",
 }
-
-
 
 #### ID DA IMAGEM DE OS A USAR
 GET devstack.local/image/v2/images

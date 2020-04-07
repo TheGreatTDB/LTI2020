@@ -114,8 +114,8 @@
                         <td>{{ instance.id }}</td>
                         <td>{{ instance.name }}</td>
                         <td>
-                            <b-button v-on:click.prevent="editInstance(instance)">Edit Instance</b-button> |
-                            <b-button v-on:click.prevent="deleteInstance(instance)">Delete Instance</b-button>
+                            <b-button variant="outline-secondary" v-on:click.prevent="editInstance(instance)">Edit Instance</b-button> |
+                            <b-button variant="outline-danger" v-on:click.prevent="deleteInstance(instance)">Delete Instance</b-button>
                         </td>
                     </tr>
                 </tbody>

@@ -6,7 +6,7 @@
         <th>Instances:</th>
       </tr>
     </table>
-    <table v-if="this.instances != null" class="table table-striped">
+    <b-table v-if="this.instances != null" class="table table-striped">
       <thead>
         <tr>
           <th>ID</th>
@@ -19,7 +19,7 @@
           <td>{{ instance.name }}</td>
         </tr>
       </tbody>
-    </table>
+    </b-table>
   </div>
 </template>
 <script>

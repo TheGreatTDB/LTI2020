@@ -2,16 +2,16 @@
   <div>
     <br />
     <p>Volume Name:</p>
-    <input v-model="nameVolume" placeholder="Volume Name" />
+    <b-form-input class="w-25 mx-auto" v-model="nameVolume" placeholder="Volume Name" />
 
     <p>Size:</p>
-    <input v-model="sizeVolume" placeholder="Size(GB)" />
+    <b-form-input class="w-25 mx-auto" v-model="sizeVolume" placeholder="Size(GB)" />
 
     <p>Description:</p>
-    <input v-model="descriptionVolume" placeholder="Small description" />
+    <b-form-input class="w-25 mx-auto" v-model="descriptionVolume" placeholder="Small description" />
 
     <p />
-    <b-button v-on:click.prevent="createVolume()">Create Volume!</b-button>
+    <b-button variant="outline-primary"  v-on:click.prevent="createVolume()">Create Volume</b-button>
   </div>
 </template>
 <script>

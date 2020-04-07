@@ -2,8 +2,8 @@
   <div>
     <br />
     <p>Instance Name:</p>
-    <input v-model="instanceName" placeholder="Instance Name" class="table table-striped" />
-    <div class="table table-striped">
+    <b-form-input class="w-25 mx-auto" v-model="instanceName" placeholder="Instance Name" />
+    <div class="w-25 mx-auto table table-striped">
       <p>Select Image:</p>
       <multiselect
         v-model="instanceImageRef"
@@ -57,9 +57,12 @@
           >{{ values.length }} options selected</span>
         </template>
       </multiselect>
+
+      <p>Volume Size(Min: 1):</p>
+      <b-form-input class="mx-auto" v-model="volumeSize" placeholder="Volume Size" />
     </div>
 
-    <b-button v-on:click.prevent="createInstance()">Create Instance</b-button>
+    <b-button variant="outline-primary"  v-on:click.prevent="createInstance()">Create Instance</b-button>
   </div>
 </template>
 <script>
@@ -71,6 +74,7 @@ export default {
       instanceImageRef: null,
       instanceFlavorRef: null,
       instanceNetworks: null,
+      volumeSize: 1,
       instanceNetworksUuid: []
     };
   },
@@ -81,7 +85,6 @@ export default {
           "x-auth-token": this.$store.state.token
         }
       });
-
       this.sortNetworks();
 
       axiosCreateInstance
@@ -92,21 +95,34 @@ export default {
             flavorRef:
               "http://openstack.example.com/flavors/" +
               this.instanceFlavorRef.id,
-            max_count: 1, 
+            max_count: 1,
             min_count: 1,
             networks: this.instanceNetworksUuid,
-            security_groups: [{
-              name: "default"
-            }]
+            block_device_mapping_v2: [
+              {
+                uuid: this.instanceImageRef.id,
+                source_type: "image",
+                destination_type: "volume",
+                boot_index: 0,
+                volume_size: this.volumeSize
+              }
+            ],
+            security_groups: [
+              {
+                name: "default"
+              }
+            ]
           }
         })
         .then(response => {
           console.log(response);
+          this.$toasted.show('Instance Created!').goAway(4000)
+
           this.$emit("reload-instances");
         })
         .catch(error => {
-          console.log("Failed to create Instance");
-          console.log(error);
+          this.$toasted.show('Instance Error!' + error.response.data.badRequest.message).goAway(4000)
+          console.log(error.response);
         });
     },
     sortNetworks: function() {
