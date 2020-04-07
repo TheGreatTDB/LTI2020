@@ -92,7 +92,12 @@ export default {
             flavorRef:
               "http://openstack.example.com/flavors/" +
               this.instanceFlavorRef.id,
-            networks: this.instanceNetworksUuid
+            max_count: 1, 
+            min_count: 1,
+            networks: this.instanceNetworksUuid,
+            security_groups: [{
+              name: "default"
+            }]
           }
         })
         .then(response => {

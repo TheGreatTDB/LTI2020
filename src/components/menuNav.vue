@@ -57,6 +57,12 @@
 
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
+        <div v-if="projectSelected != null && this.$store.state.load == true">
+        <b-button
+          variant="outline-danger"
+          v-on:click.prevent="selectTab('dashboard')"
+        >Dashboard</b-button>|
+      </div>
         <b-navbar-nav>
           <b-nav-item-dropdown v-if="projectSelected != null && this.$store.state.load == true" text="Show Details" right>
             <b-dropdown-item v-on:click.prevent="selectTab('instances')">Instances</b-dropdown-item>

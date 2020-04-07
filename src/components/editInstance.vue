@@ -2,12 +2,12 @@
   <div>
     <br />
     <p>Instance Name:</p>
-    <input v-model="instanceName" placeholder="Instance Name" class="table table-striped" />
+    <input v-model="currentInstance.name" placeholder="Instance Name" class="table table-striped" />
     
     <div class="table table-striped">
       <p>Select Image:</p>
       <multiselect
-        v-model="instanceImageRef"
+        v-model="currentInstance.image"
         :options="images"
         :multiple="false"
         label="name"
@@ -25,7 +25,7 @@
 
       <p>Select Flavor:</p>
       <multiselect
-        v-model="instanceFlavorRef"
+        v-model="currentInstance.flavor"
         :options="flavors"
         :multiple="false"
         label="name"
@@ -84,18 +84,10 @@ export default {
         }
       });
 
-      //this.sortNetworks();
 
       axiosEditInstance
         .put("/compute/v2.1/servers/" + this.currentInstance.id, {
-          server: {
-            name: this.instanceName,
-            imageRef: this.instanceImageRef.id,
-            flavorRef:
-              "http://openstack.example.com/flavors/" +
-              this.instanceFlavorRef.id
-            //networks: this.instanceNetworksUuid
-          }
+          server: this.currentInstance
         })
         .then(response => {
           console.log(response);
@@ -106,18 +98,6 @@ export default {
           console.log(error);
         });
     },
-    /*
-    sortNetworks: function() {
-      console.log(this.instanceNetworks);
-
-      this.instanceNetworks.forEach(network => {
-        let aux = { uuid: network.id };
-        this.instanceNetworksUuid.push(aux);
-      });
-
-      console.log(this.instanceNetworksUuid);
-    }
-    */
   },
   created(){
     console.log("INSIDE EDIT INSTANCE")

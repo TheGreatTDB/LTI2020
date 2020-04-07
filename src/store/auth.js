@@ -14,7 +14,7 @@ export default new Vuex.Store({
     token: sessionStorage.getItem("token") || null,
     currentProject: null,
     refresh: false,
-    selectedTab: "instances",
+    selectedTab: "dashboard",
     load: false
   },
   mutations: {
