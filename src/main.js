@@ -12,6 +12,8 @@ import Toasted from 'vue-toasted';
 
 import store from "./store/auth";
 
+import VueApexCharts from 'vue-apexcharts';
+
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -21,6 +23,7 @@ Vue.use(VueAxios, axios);
 Vue.component("multiselect", Multiselect);
 Vue.use(BootstrapVue, IconsPlugin);
 Vue.use(Toasted);
+Vue.use(VueApexCharts);
 
 Vue.config.productionTip = false;
 

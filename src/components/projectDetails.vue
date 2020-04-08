@@ -152,6 +152,7 @@
                 @reload-volumes="reloadVolumes"/>
 
             <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
+            <dashboard v-if="this.$store.state.selectedTab =='dashboard'" />
         </div>
 </template>
 <script>
@@ -159,6 +160,7 @@ import CreateInstanceComponent from "./createInstance";
 import EditInstanceComponent from "./editInstance";
 import CreateVolumeComponent from "./createVolume";
 import UploadImageComponent from "./uploadImage";
+import DashboardComponent from "./dashboard";
 
 
 export default {
@@ -344,7 +346,8 @@ export default {
         createInstance: CreateInstanceComponent,
         editInstance: EditInstanceComponent,
         createVolume: CreateVolumeComponent,
-        uploadImage: UploadImageComponent
+        uploadImage: UploadImageComponent,
+        dashboard: DashboardComponent
     },
     created(){
         this.$toasted.show('Loading...').goAway(2000);
