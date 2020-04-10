@@ -3,8 +3,10 @@
     <br />
     <p>Instance Name:</p>
     <b-form-input class="w-25 mx-auto" v-model="currentInstance.name" placeholder="Instance Name" />
-    <br/>
-    <b-button  variant="outline-primary"  v-on:click.prevent="createInstance()">Create Instance</b-button>
+    <p>Description:</p>
+    <b-form-input class="w-25 mx-auto" v-model="description" placeholder="Description" />
+    <br />
+    <b-button variant="outline-primary" v-on:click.prevent="createInstance()">Create Instance</b-button>
   </div>
 </template>
 <script>
@@ -24,15 +26,16 @@ export default {
     createInstance: function() {
       var axiosEditInstance = this.axios.create({
         headers: {
-          "x-auth-token": this.$store.state.token
+          "x-auth-token": this.$store.state.token,
+          "X-OpenStack-Nova-API-Version": "2.19"
         }
       });
 
       axiosEditInstance
         .put("/compute/v2.1/servers/" + this.currentInstance.id, {
           server: {
-            name: this.currentInstance.name
-            // "description": "sdfasfsfa"
+            name: this.currentInstance.name,
+            description: this.description
           }
         })
         .then(response => {
