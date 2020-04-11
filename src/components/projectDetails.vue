@@ -103,6 +103,7 @@
           <th>Floating network ID</th>
           <th>Created at</th>
           <th>Updated at</th>
+          <th>Options</th>
         </tr>
       </thead>
       <tbody>
@@ -111,10 +112,22 @@
           <td>{{ floatIP.status || "N/A" }}</td>
           <td>{{ floatIP.description || "N/A" }}</td>
           <td>{{ floatIP.floating_ip_address || "N/A" }}</td>
-          <td>{{ floatIP.port_id || "N/A" }}</td>
+          <td>{{ floatIP.port_id || "" }}</td>
           <td>{{ floatIP.floating_network_id || "N/A" }}</td>
           <td>{{ floatIP.created_at || "N/A" }}</td>
           <td>{{ floatIP.updated_at || "N/A" }}</td>
+          <td>
+            <b-button
+              v-if="!floatIP.port_id"
+              variant="outline-secondary"
+              v-on:click.prevent="associateIP(floatIP.id)"
+            >Associate IP</b-button>
+            <b-button
+              v-if="floatIP.port_id"
+              variant="outline-danger"
+              v-on:click.prevent="disassociateIP(floatIP.id)"
+            >Disassociate IP</b-button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -241,6 +254,13 @@
       @reload-floatingIP="reloadFloatingIP"
     />
 
+    <associateIP
+      v-if="this.$store.state.selectedTab =='associateIP'"
+      :instances="this.instances"
+      :floatIPID="this.selectedFloatIPID"
+      @reload-floatingIP="reloadFloatingIP"
+    />
+
     <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
     <dashboard v-if="this.$store.state.selectedTab =='dashboard'" />
   </div>
@@ -252,7 +272,7 @@ import CreateVolumeComponent from "./createVolume";
 import UploadImageComponent from "./uploadImage";
 import DashboardComponent from "./dashboard";
 import CreateFloatingIPComponent from "./createFloatingIP";
-
+import AssociateIPComponent from "./associateFloatIP";
 
 export default {
   props: [],
@@ -265,6 +285,7 @@ export default {
       volumes: null,
       floatingIPs: null,
       selectedInstance: null,
+      selectedFloatIPID: null,
       loaded: 0
     };
   },
@@ -416,6 +437,35 @@ export default {
     selectTab: function(tab) {
       this.$store.commit("setSelectedTab", tab);
     },
+    associateIP: function(id) {
+      this.selectedFloatIPID = id;
+      this.$store.commit("setSelectedTab", "associateIP");
+    },
+    disassociateIP: function(id) {
+      var deleteAssociate = this.axios.create({
+        baseURL: "http://devstack.local:9696",
+        headers: {
+          "x-auth-token": this.$store.state.token,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      });
+
+      deleteAssociate
+        .put("/v2.0/floatingips/" + id, {
+          floatingip: {
+            port_id: null
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.reloadFloatingIP();
+        })
+        .catch(error => {
+          console.log("Failed to delete Associate");
+          console.log(error);
+        });
+    },
     editInstance: function(instance) {
       console.log(instance);
 
@@ -481,6 +531,7 @@ export default {
     uploadImage: UploadImageComponent,
     dashboard: DashboardComponent,
     createFloatingIP: CreateFloatingIPComponent,
+    associateIP: AssociateIPComponent
   },
   created() {
     this.$toasted.show("Loading...").goAway(2000);
