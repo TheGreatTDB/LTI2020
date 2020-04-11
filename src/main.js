@@ -17,7 +17,7 @@ import VueApexCharts from 'vue-apexcharts';
 import axios from "axios";
 import VueAxios from "vue-axios";
 
-axios.defaults.baseURL = "http://devstack.local";
+axios.defaults.baseURL = "http://134.122.49.176"; //"http://devstack.local"; //Mudar para ip do servidor do openstack! ex: "http://192.168.x.x"
 
 Vue.use(VueAxios, axios);
 Vue.component("multiselect", Multiselect);

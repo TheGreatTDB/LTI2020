@@ -70,6 +70,8 @@ export default {
         .then(response => {
           console.log("SUCCESS!!");
           console.log(response);
+
+          this.$emit("reload-images");
         })
         .catch(error => {
           console.log(error);

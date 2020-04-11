@@ -240,8 +240,9 @@
       :networks="this.networks"
       @reload-floatingIP="reloadFloatingIP"
     />
+    <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" 
+        @reload-images="reloadImages" />
 
-    <uploadImage v-if="this.$store.state.selectedTab =='uploadImage'" />
     <dashboard v-if="this.$store.state.selectedTab =='dashboard'" />
   </div>
 </template>
@@ -282,23 +283,23 @@ export default {
           this.images = response.data.images;
           this.loaded++;
 
-          if (this.loaded >= 5) {
-            this.$toasted.show("Loading Complete").goAway(2000);
-            this.$store.commit("loadingComplete", true);
-          }
-        })
-        .catch(error => {
-          console.log("Failed to load Images");
-          console.log(error);
-        });
-    },
-    loadNetworks: function() {
-      var axiosNetworks = this.axios.create({
-        baseURL: "http://devstack.local:9696",
-        headers: {
-          "x-auth-token": this.$store.state.token
-        }
-      });
+                if(this.loaded >= 5){
+                    this.$toasted.show('Loading Complete').goAway(2000);
+                    this.$store.commit('loadingComplete', true);
+                }
+            })
+            .catch(error => {
+                console.log("Failed to load Images")
+                console.log(error)
+            })
+        },
+        loadNetworks: function() {
+            var axiosNetworks = this.axios.create({
+                baseURL: "http://134.122.49.176:9696", //"http://devstack.local:9696",
+                headers: {
+                    'x-auth-token': this.$store.state.token,
+                }
+            })
 
       axiosNetworks
         .get("/v2.0/networks")
@@ -389,17 +390,12 @@ export default {
     },
     loadVolumes: function() {
       var axiosVolumes = this.axios.create({
-        baseURL:
-          "http://devstack.local/volume/v3/" +
-          this.$store.state.currentProject +
-          "/volumes",
-        headers: {
-          "x-auth-token": this.$store.state.token
-        }
-      });
-      axiosVolumes
-        .get()
-        .then(response => {
+          headers: {
+              'x-auth-token': this.$store.state.token,
+          }
+      })
+      axiosVolumes.get("/volume/v3/" + this.$store.state.currentProject + "/volumes")
+      .then(response => {
           this.volumes = response.data.volumes;
           this.loaded++;
 
