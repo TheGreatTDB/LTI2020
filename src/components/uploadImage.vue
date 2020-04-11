@@ -17,7 +17,7 @@
             v-on:change="handleFileUpload()"
           ></b-form-file>
         </b-form-group>
-        <select v-model="format" >
+        <b-form-select v-model="format" >
           <option disabled value="">Please select one</option>
           <option :value="'iso'">ISO</option>
           <option :value="'ploop'">PLOOP</option>
@@ -29,7 +29,7 @@
           <option :value="'aki'">AKI</option>
           <option :value="'ami'">AMI</option>
           <option :value="'ari'">ARI</option>
-        </select>
+        </b-form-select>
       </div>
 
       <!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" /> -->
@@ -70,6 +70,8 @@ export default {
         .then(response => {
           console.log("SUCCESS!!");
           console.log(response);
+
+          this.$emit("reload-images");
         })
         .catch(error => {
           console.log(error);
