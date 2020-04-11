@@ -35,7 +35,7 @@ export default {
       floating_network_id: null,
       tenant_id: null,
       instanceNetworks: null,
-      instanceNetworksUuid: []
+      externalNetworks: []
     };
   },
   computed: {
@@ -43,10 +43,10 @@ export default {
       let networkprops = this.networks;
       networkprops.forEach(net => {
         if (net["router:external"]) {
-          this.instanceNetworksUuid.push(net);
+          this.externalNetworks.push(net);
         }
       });
-      return this.instanceNetworksUuid;
+      return this.externalNetworks;
     }
   },
   methods: {
@@ -63,7 +63,7 @@ export default {
         .post("/v2.0/floatingips", {
           floatingip: {
             tenant_id: this.$store.state.currentProject,
-            floating_network_id: "f8317863-1c61-42bc-a837-b3458d7b9411",
+            floating_network_id: this.instanceNetworks.id,
             description: this.description
           }
         })
@@ -72,25 +72,12 @@ export default {
           this.$emit("reload-floatingIP");
         })
         .catch(error => {
-          console.log("Failed to create Volume");
+          console.log("Failed to create FloatingIP");
           console.log(error);
         });
     },
-    getExternalNetworks: function() {
-      console.log("isto sao as network");
-      console.log(this.instanceNetworks);
-      this.instanceNetworks.forEach(network => {
-        if (network["router:external"]) {
-          let aux = { uuid: network.id };
-          this.instanceNetworksUuid.push(aux);
-        }
-      });
-
-      console.log(this.instanceNetworksUuid);
-    }
   },
   created() {
-    // this.getExternalNetworks();
   }
 };
 </script>
