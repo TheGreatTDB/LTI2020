@@ -1,8 +1,24 @@
 <template>
   <div>
     <br />
-    <p>floating_network_id dropbox ou seja a pool:</p>
-    <b-form-input class="w-25 mx-auto" v-model="nameVolume" placeholder="Volume Name" />
+    <p>Pool:</p>
+    <multiselect
+      v-model="instanceNetworks"
+      :options="filteredNetworks"
+      :multiple="false"
+      label="name"
+      track-by="id"
+      placeholder="Choose a Pool"
+      :allow-empty="false"
+      class="w-25 mx-auto"
+    >
+      <template slot="selection" slot-scope="{ values, search, isOpen }">
+        <span
+          class="multiselect__single"
+          v-if="values.length &amp;&amp; !isOpen"
+        >{{ values.length }} options selected</span>
+      </template>
+    </multiselect>
     <p>Description:</p>
     <b-form-input class="w-25 mx-auto" v-model="description" placeholder="Small description" />
     <p />
@@ -11,13 +27,27 @@
 </template>
 <script>
 export default {
+  props: ["networks"],
   data: function() {
     return {
       nameVolume: "",
       description: "",
       floating_network_id: null,
-      tenant_id: null
+      tenant_id: null,
+      instanceNetworks: null,
+      instanceNetworksUuid: []
     };
+  },
+  computed: {
+    filteredNetworks() {
+      let networkprops = this.networks;
+      networkprops.forEach(net => {
+        if (net["router:external"]) {
+          this.instanceNetworksUuid.push(net);
+        }
+      });
+      return this.instanceNetworksUuid;
+    }
   },
   methods: {
     createFloatingIP: function() {
@@ -45,17 +75,22 @@ export default {
           console.log("Failed to create Volume");
           console.log(error);
         });
+    },
+    getExternalNetworks: function() {
+      console.log("isto sao as network");
+      console.log(this.instanceNetworks);
+      this.instanceNetworks.forEach(network => {
+        if (network["router:external"]) {
+          let aux = { uuid: network.id };
+          this.instanceNetworksUuid.push(aux);
+        }
+      });
+
+      console.log(this.instanceNetworksUuid);
     }
-    // teste: function() {
-    //     console.log(this.instanceNetworks)
-
-    //     this.instanceNetworks.forEach(network => {
-    //         let aux = {uuid : network.id}
-    //         this.instanceNetworksUuid.push(aux)
-    //     })
-
-    //     console.log(this.instanceNetworksUuid)
-    // }
+  },
+  created() {
+    // this.getExternalNetworks();
   }
 };
 </script>

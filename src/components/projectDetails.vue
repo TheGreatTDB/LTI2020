@@ -237,6 +237,7 @@
 
     <createFloatingIP
       v-if="this.$store.state.selectedTab =='createFloatingIP'"
+      :networks="this.networks"
       @reload-floatingIP="reloadFloatingIP"
     />
 
@@ -328,8 +329,6 @@ export default {
         .get("/v2.0/floatingips")
         .then(response => {
           this.floatingIPs = response.data.floatingips;
-          console.log("FI");
-          console.log(this.floatingIPs);
           this.loaded++;
 
           if (this.loaded >= 5) {
