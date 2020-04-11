@@ -295,7 +295,7 @@ export default {
         },
         loadNetworks: function() {
             var axiosNetworks = this.axios.create({
-                baseURL: "http://134.122.49.176:9696", //"http://devstack.local:9696",
+                baseURL: this.axios.defaults.baseURL + ":9696",
                 headers: {
                     'x-auth-token': this.$store.state.token,
                 }
@@ -320,7 +320,7 @@ export default {
     },
     loadFloatingIP: function() {
       var axiosNetworks = this.axios.create({
-        baseURL: "http://134.122.49.176:9696", //"http://devstack.local:9696",
+        baseURL: this.axios.defaults.baseURL + ":9696",
         headers: {
           "x-auth-token": this.$store.state.token
         }
