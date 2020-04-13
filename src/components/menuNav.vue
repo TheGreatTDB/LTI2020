@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
       <a class="navbar-brand mr-1">
-        <h1 style="color:white;">
+        <h2 style="color:white;">
           <img
             v-on:click.prevent="profile()"
             height="60"
@@ -10,7 +10,7 @@
             src="./../assets/OpenStack-Logo-Mark.png"
           />
           Welcome, {{ this.$store.state.user.username }}
-        </h1>
+        </h2>
       </a>
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -64,6 +64,16 @@
           <b-button variant="outline-danger" v-on:click.prevent="selectTab('dashboard')">Dashboard</b-button>|
         </div>
         <b-navbar-nav>
+          
+          <b-nav-item-dropdown
+            v-if="projectSelected != null && this.$store.state.load == true"
+            text="Containers"
+            right
+          >
+            <b-dropdown-item v-on:click.prevent="selectTab('listContainer')">List Containers</b-dropdown-item>
+            <b-dropdown-item v-on:click.prevent="selectTab('createContainer')">Create Container</b-dropdown-item>
+          </b-nav-item-dropdown>
+          
           <b-nav-item-dropdown
             v-if="projectSelected != null && this.$store.state.load == true"
             text="Show Details"

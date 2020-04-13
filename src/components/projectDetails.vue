@@ -264,6 +264,10 @@
     />
 
     <dashboard v-if="this.$store.state.selectedTab =='dashboard'" />
+
+    <container 
+      v-if="this.$store.state.selectedTab =='listContainer' || this.$store.state.selectedTab == 'createContainer'"
+      :images="this.images"/>
   </div>
 </template>
 <script>
@@ -274,6 +278,7 @@ import UploadImageComponent from "./uploadImage";
 import DashboardComponent from "./dashboard";
 import CreateFloatingIPComponent from "./createFloatingIP";
 import AssociateIPComponent from "./associateFloatIP";
+import ContainerComponent from "./container";
 
 export default {
   props: [],
@@ -303,8 +308,9 @@ export default {
         .then(response => {
           this.images = response.data.images;
           this.loaded++;
+          console.log(response)
 
-                if(this.loaded >= 5){
+                if(this.loaded >= 6){
                     this.$toasted.show('Loading Complete').goAway(2000);
                     this.$store.commit('loadingComplete', true);
                 }
@@ -329,7 +335,7 @@ export default {
           console.log(this.networks);
           this.loaded++;
 
-          if (this.loaded >= 5) {
+          if (this.loaded >= 6) {
             this.$toasted.show("Loading Complete").goAway(2000);
             this.$store.commit("loadingComplete", true);
           }
@@ -353,7 +359,7 @@ export default {
           this.floatingIPs = response.data.floatingips;
           this.loaded++;
 
-          if (this.loaded >= 5) {
+          if (this.loaded >= 6) {
             this.$toasted.show("Loading Complete").goAway(2000);
             this.$store.commit("loadingComplete", true);
           }
@@ -376,7 +382,7 @@ export default {
           this.flavors = response.data.flavors;
           this.loaded++;
 
-          if (this.loaded >= 5) {
+          if (this.loaded >= 6) {
             this.$toasted.show("Loading Complete").goAway(2000);
             this.$store.commit("loadingComplete", true);
           }
@@ -399,7 +405,7 @@ export default {
           this.instances = response.data.servers;
           this.loaded++;
 
-          if (this.loaded >= 5) {
+          if (this.loaded >= 6) {
             this.$toasted.show("Loading Complete").goAway(2000);
             this.$store.commit("loadingComplete", true);
           }
@@ -420,7 +426,7 @@ export default {
           this.volumes = response.data.volumes;
           this.loaded++;
 
-          if (this.loaded >= 5) {
+          if (this.loaded >= 6) {
             this.$toasted.show("Loading Complete").goAway(2000);
             this.$store.commit("loadingComplete", true);
           }
@@ -439,7 +445,7 @@ export default {
     },
     disassociateIP: function(id) {
       var deleteAssociate = this.axios.create({
-        baseURL: "http://devstack.local:9696",
+        baseURL: this.axios.defaults.baseURL + ":9696",
         headers: {
           "x-auth-token": this.$store.state.token,
           "Content-Type": "application/json",
@@ -531,7 +537,8 @@ export default {
     uploadImage: UploadImageComponent,
     dashboard: DashboardComponent,
     createFloatingIP: CreateFloatingIPComponent,
-    associateIP: AssociateIPComponent
+    associateIP: AssociateIPComponent,
+    container: ContainerComponent
   },
   created() {
     this.$toasted.show("Loading...").goAway(2000);

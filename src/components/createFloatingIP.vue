@@ -52,7 +52,7 @@ export default {
   methods: {
     createFloatingIP: function() {
       var axiosCreateInstance = this.axios.create({
-        baseURL: "http://devstack.local:9696",
+        baseURL: this.axios.defaults.baseURL + ":9696",
         headers: {
           "x-auth-token": this.$store.state.token,
           "Content-Type": "application/json"
